@@ -2,6 +2,8 @@ package com.example.rbt_praksa_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,10 +22,20 @@ public class MainActivity extends AppCompatActivity {
 
         Button welcome_button = findViewById(R.id.welcome_button);
 
+        Button airvironment_button = findViewById(R.id.airvironment_button);
+
         welcome_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 welcome();
+            }
+        });
+
+        airvironment_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent airvironmentIntent = new Intent(view.getContext(), AirvironmentActivity.class);
+                startActivity(airvironmentIntent);
             }
         });
 
