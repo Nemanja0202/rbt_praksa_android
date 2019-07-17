@@ -24,7 +24,6 @@
         app:layout_constraintTop_toBottomOf="@+id/welcome_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Welcome"
-        android:onClick="welcome"/>
+        android:text="Welcome"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
