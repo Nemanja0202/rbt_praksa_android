@@ -44,17 +44,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
+
         String time = mDataset.get(position).getTimestamp();
-        holder.textView_timestamp.setText(time.substring(8,10) + "." + time.substring(5,7) + "." + time.substring(0,4) + "/" + time.substring(11,16));
+        holder.textView_timestamp.setText(time.substring(8,10) + "." + time.substring(5,7) + "." + time.substring(0,4) + "\n" + time.substring(11,16));
 
-        Double temp = mDataset.get(position).getTemperature();
-        holder.textView_temp_value.setText(temp.toString());
+        Double temp1 = mDataset.get(position).getTemperature();
+        String temp2 = temp1.toString();
+        holder.textView_temp_value.setText(temp2.substring(0, temp2.length()-3) + "°C");
 
-        Double humid = mDataset.get(position).getHumidity();
-        holder.textView_humidity_value.setText(humid.toString());
+        Double humid1 = mDataset.get(position).getHumidity();
+        String humid2 = humid1.toString();
+        holder.textView_humidity_value.setText(humid2.substring(0, humid2.length()-3) + "%");
 
-        Double quality = mDataset.get(position).getPollution();
-        holder.textView_quality_value.setText(quality.toString());
+        Double quality1 = mDataset.get(position).getPollution();
+        String quality2 = quality1.toString();
+        holder.textView_quality_value.setText(quality2.substring(0, quality2.length()-3));
     }
 
     @Override
