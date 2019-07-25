@@ -88,9 +88,9 @@ public class Chart extends View {
 
         Date startDate = new Date(listParams.get(0).getTimestamp());
         Date endDate = new Date(listParams.get(listParams.size()-1).getTimestamp());
-        //Date line1X = new Date(listParams.get(0).getTimestamp()+timeCoef);
+        Date line1X = new Date(listParams.get(0).getTimestamp()+timeCoef);
         Date line2X = new Date(timeCoef/2);
-        //Date line3X = new Date(listParams.get(0).getTimestamp()+3*timeCoef);
+        Date line3X = new Date(listParams.get(0).getTimestamp()+3*timeCoef);
 
         //SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
