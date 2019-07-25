@@ -50,15 +50,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         Double temp1 = mDataset.get(position).getTemperature();
         String temp2 = temp1.toString();
-        holder.textView_temp_value.setText(temp2.substring(0, temp2.length()-3) + "°C");
+        holder.textView_temp_value.setText(temp2 + "°C");
 
         Double humid1 = mDataset.get(position).getHumidity();
         String humid2 = humid1.toString();
-        holder.textView_humidity_value.setText(humid2.substring(0, humid2.length()-3) + "%");
+        holder.textView_humidity_value.setText(humid2 + "%");
 
         Double quality1 = mDataset.get(position).getPollution();
         String quality2 = quality1.toString();
-        holder.textView_quality_value.setText(quality2.substring(0, quality2.length()-3));
+        holder.textView_quality_value.setText(quality2);
     }
 
     @Override

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rbt_praksa_android.model.AirVironment;
+import com.example.rbt_praksa_android.model.Temperature;
 import com.example.rbt_praksa_android.network.BroadcastHandler;
 import com.example.rbt_praksa_android.network.MeasurementApi;
 import com.example.rbt_praksa_android.network.RetrofitClientInstance;
@@ -29,6 +30,8 @@ import com.example.rbt_praksa_android.network.RetrofitClientInstance;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     Button history;
     Button share;
     ArrayList<AirVironment> historyList = new ArrayList<>();
+    public static ArrayList<Temperature> temperatureList = new ArrayList<>();
 
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
@@ -115,9 +119,9 @@ public class MainActivity extends AppCompatActivity {
 
                     shareString += "Here's the data on air quality recorded on ";
                     shareString += timeDate + " at " + timeHours + ": \n\n";
-                    shareString += "Temperature: " + temp_share.substring(0, temp_share.length()-3) + "°C" + "\n";
-                    shareString += "Humidity: " + humid_share.substring(0, humid_share.length()-3) + "%" + "\n";
-                    shareString += "Pollution: " + quality_share.substring(0, quality_share.length()-3) + "\n\n";
+                    shareString += "Temperature: " + temp_share + "°C" + "\n";
+                    shareString += "Humidity: " + humid_share + "%" + "\n";
+                    shareString += "Pollution: " + quality_share + "\n\n";
                     shareString += "Powered by AIRvironment - RBT";
 
                     i.putExtra(Intent.EXTRA_TEXT, shareString);
@@ -141,9 +145,9 @@ public class MainActivity extends AppCompatActivity {
 
                             shareString += "Here's the data on air quality recorded on ";
                             shareString += timeDate + " at " + timeHours + ": \n\n";
-                            shareString += "Temperature: " + m.group(2).substring(0, m.group(2).length()-3) + "°C" + "\n";
-                            shareString += "Humidity: " + m.group(3).substring(0, m.group(3).length()-3) + "%" + "\n";
-                            shareString += "Pollution: " + m.group(4).substring(0, m.group(4).length()-3) + "\n\n";
+                            shareString += "Temperature: " + m.group(2) + "°C" + "\n";
+                            shareString += "Humidity: " + m.group(3) + "%" + "\n";
+                            shareString += "Pollution: " + m.group(4) + "\n\n";
                             shareString += "Powered by AIRvironment - RBT";
 
                             i.putExtra(Intent.EXTRA_TEXT, shareString);
@@ -177,19 +181,26 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call<AirVironment> call, Response<AirVironment> response) {
                             AirVironment airdata = response.body();
 
+                            String timeGraph = airdata.getTimestamp();
+                            timeGraph = timeGraph.replace('T',' ');
+                            timeGraph = timeGraph.substring(0,19);
+                            java.sql.Timestamp ts = java.sql.Timestamp.valueOf(timeGraph);
+                            long time = ts.getTime();
+
                             historyList.add(airdata);
+                            temperatureList.add(new Temperature(airdata.getTemperature().floatValue(), time ));
 
                             Double temp1 = airdata.getTemperature();
-                            String temp2 = temp1.toString();
-                            temp.setText(temp2.substring(0, temp2.length()-3) + "°C");
+                            //String temp2 = temp1.toString();
+                            temp.setText(temp1 + "°C");
 
                             Double humid1 = airdata.getHumidity();
-                            String humid2 = humid1.toString();
-                            humid.setText(humid2.substring(0, humid2.length()-3) + "%");
+                            //String humid2 = humid1.toString();
+                            humid.setText(humid1 + "%");
 
                             Double quality1 = airdata.getPollution();
-                            String quality2 = quality1.toString();
-                            pollution.setText(quality2.substring(0, quality2.length()-3));
+                            //String quality2 = quality1.toString();
+                            pollution.setText(quality1.toString());
 
                             String timestamp1 = airdata.getTimestamp();
                             timestamp.setText("Last update: " + timestamp1.substring(8, 10) + " " +
@@ -220,9 +231,9 @@ public class MainActivity extends AppCompatActivity {
                             String saved_temp = m.group(2);
                             String saved_humid = m.group(3);
                             String saved_pollution = m.group(4);
-                            temp.setText(saved_temp.substring(0, saved_temp.length()-3) + "°C");
-                            humid.setText(saved_humid.substring(0, saved_humid.length()-3) + "%");
-                            pollution.setText(saved_pollution.substring(0, saved_pollution.length()-3));
+                            temp.setText(saved_temp + "°C");
+                            humid.setText(saved_humid + "%");
+                            pollution.setText(saved_pollution);
                         }
                     } else {
                         timestamp.setText("No Internet connection - No data saved");

@@ -5,6 +5,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
 
+    <com.example.rbt_praksa_android.Chart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
+
     <TextView
         android:id="@+id/time_label"
         android:text="Time:"
@@ -12,7 +21,7 @@
         android:layout_height="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/temp_label"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chart"
         android:gravity="center"
         android:background="#4F000000"/>
 
@@ -25,7 +34,7 @@
         android:layout_height="50dp"
         app:layout_constraintStart_toEndOf="@+id/time_label"
         app:layout_constraintEnd_toStartOf="@+id/humidity_label"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chart"
         android:gravity="center"
         android:background="#4F000000"/>
 
@@ -38,7 +47,7 @@
         android:layout_height="50dp"
         app:layout_constraintStart_toEndOf="@+id/temp_label"
         app:layout_constraintEnd_toStartOf="@+id/quality_label"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chart"
         android:gravity="center"
         android:background="#4F000000"/>
 
@@ -51,7 +60,7 @@
         android:layout_height="50dp"
         app:layout_constraintStart_toEndOf="@id/humidity_label"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chart"
         android:gravity="center"
         android:background="#4F000000"/>
 

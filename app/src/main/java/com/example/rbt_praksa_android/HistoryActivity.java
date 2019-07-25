@@ -2,6 +2,7 @@ package com.example.rbt_praksa_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
@@ -24,9 +25,13 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        //Chart chart = new Chart(getApplicationContext(), );
+        //chart.invalidate();
 
+        Chart.setParameters(MainActivity.temperatureList);
+        setContentView(R.layout.activity_history);
         LinearLayout small_layout = findViewById(R.id.small_layout);
+
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
