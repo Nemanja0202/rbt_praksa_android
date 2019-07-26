@@ -2,6 +2,8 @@ package com.example.rbt_praksa_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Pair;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -14,21 +16,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rbt_praksa_android.model.AirVironment;
 import com.example.rbt_praksa_android.model.MyAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HistoryActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<Pair<Long, Float>> chartList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Chart chart = new Chart(getApplicationContext(), );
-        //chart.invalidate();
 
-        Chart.setParameters(MainActivity.temperatureList);
+
+        Intent intent = getIntent();
+        //chartList = (ArrayList< Pair<Long, Float>>) intent.getSerializableExtra("chartList");
+
+        setParameters(MainActivity.chartList);
+
         setContentView(R.layout.activity_history);
         LinearLayout small_layout = findViewById(R.id.small_layout);
 
@@ -39,10 +47,21 @@ public class HistoryActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        Intent intent = getIntent();
         ArrayList<AirVironment> history = intent.getParcelableArrayListExtra("historyList");
 
         mAdapter = new MyAdapter(history);
         recyclerView.setAdapter(mAdapter);
+    }
+
+    private void setParameters(ArrayList<Pair<Long, Float>> chartList){
+//        Date startDate = new Date(listParams.get(0).getTimestamp());
+//        Date endDate = new Date(listParams.get(listParams.size()-1).getTimestamp());
+//        Date line1X = new Date(listParams.get(0).getTimestamp()+timeCoef);
+//        Date line2X = new Date(timeCoef/2);
+//        Date line3X = new Date(listParams.get(0).getTimestamp()+3*timeCoef);
+//
+//        //SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
+//        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Chart.setParameters(chartList);
     }
 }

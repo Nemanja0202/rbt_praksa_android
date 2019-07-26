@@ -16,13 +16,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Telephony;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rbt_praksa_android.model.AirVironment;
-import com.example.rbt_praksa_android.model.Temperature;
 import com.example.rbt_praksa_android.network.BroadcastHandler;
 import com.example.rbt_praksa_android.network.MeasurementApi;
 import com.example.rbt_praksa_android.network.RetrofitClientInstance;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     Button history;
     Button share;
     ArrayList<AirVironment> historyList = new ArrayList<>();
-    public static ArrayList<Temperature> temperatureList = new ArrayList<>();
+    public static ArrayList<Pair<Long, Float>> chartList = new ArrayList<Pair<Long, Float>>();
 
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), HistoryActivity.class);
                 intent.putExtra("historyList", historyList);
+                //intent.putExtra("chartList", chartList);
                 startActivity(intent);
             }
         });
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                             long time = ts.getTime();
 
                             historyList.add(airdata);
-                            temperatureList.add(new Temperature(airdata.getTemperature().floatValue(), time ));
+                            chartList.add(new Pair<Long, Float>(time, airdata.getTemperature().floatValue()));
 
                             Double temp1 = airdata.getTemperature();
                             //String temp2 = temp1.toString();

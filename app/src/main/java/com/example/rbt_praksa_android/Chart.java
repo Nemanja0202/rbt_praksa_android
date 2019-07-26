@@ -9,10 +9,10 @@ import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.View;
 
-import com.example.rbt_praksa_android.model.Temperature;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -23,7 +23,7 @@ public class Chart extends View {
 
     Paint line = new Paint();
     Paint text = new Paint();
-    private static List<Temperature> listParams;
+    private static List<Pair<Long, Float>> listParams;
     private float minTemp, maxTemp;
 
     public Chart(Context context, AttributeSet attributeSet) {
@@ -35,11 +35,15 @@ public class Chart extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        float min = listParams.get(0).getTemperature();
-        float max = listParams.get(0).getTemperature();
+        long minX = listParams.get(0).first;
+        long maxX = listParams.get(0).first;
+
+        float minY = listParams.get(0).second;
+        float maxY = listParams.get(0).second;
 
         int y = canvas.getHeight();
         int x = canvas.getWidth();
+
         line.setColor(Color.BLACK);
         line.setStrokeWidth(5);
 
@@ -55,72 +59,71 @@ public class Chart extends View {
         canvas.drawLine(x*0.7f, y*0.1f, x*0.7f, y*0.9f, line);
 
         for (int i=0; i<listParams.size(); i++) {
-            if (listParams.get(i).getTemperature() > max) {
-                max = listParams.get(i).getTemperature();
+            if (listParams.get(i).first > maxX) {
+                maxX = listParams.get(i).first;
             }
 
-            if (listParams.get(i).getTemperature() < min) {
-                min = listParams.get(i).getTemperature();
+            if (listParams.get(i).first < minX) {
+                minX = listParams.get(i).first;
+            }
+
+            if (listParams.get(i).second > maxY) {
+                maxY = listParams.get(i).second;
+            }
+
+            if (listParams.get(i).second < minY) {
+                minY = listParams.get(i).second;
             }
         }
 
-        text.setColor(Color.BLACK);
-        text.setTextSize(20);
+        //text.setColor(Color.BLACK);
+        //text.setTextSize(20);
 
-        DecimalFormat numberFormat = new DecimalFormat("#.00");
-        max = max*1.1f;
-        min = min*0.9f;
-        max = Float.parseFloat(numberFormat.format(max));
-        min = Float.parseFloat(numberFormat.format(min));
+        //DecimalFormat numberFormat = new DecimalFormat("#.00");
+        minY = minY*0.9f;
+        maxY = maxY*1.1f;
+//        maxY = Float.parseFloat(numberFormat.format(maxY));
+//        minY = Float.parseFloat(numberFormat.format(minY));
 
-        float textCoefY = (max-min)/4;
-        float line1Y = Float.parseFloat(numberFormat.format(min+textCoefY));
-        float line2Y = Float.parseFloat(numberFormat.format(min+(textCoefY*2)));
-        float line3Y = Float.parseFloat(numberFormat.format(max-textCoefY));
+//        float textCoefY = (maxY-minY)/4;
+//        float line1Y = Float.parseFloat(numberFormat.format(minY+textCoefY));
+//        float line2Y = Float.parseFloat(numberFormat.format(minY+(textCoefY*2)));
+//        float line3Y = Float.parseFloat(numberFormat.format(maxY-textCoefY));
 
-        canvas.drawText(Float.toString(min), x*0.01f, y*0.9f, text);
-        canvas.drawText(Float.toString(line1Y), x*0.01f, y*0.7f, text);
-        canvas.drawText(Float.toString(line2Y), x*0.01f, y*0.5f, text);
-        canvas.drawText(Float.toString(line3Y), x*0.01f, y*0.3f, text);
-        canvas.drawText(Float.toString(max), x*0.01f, y*0.1f, text);
+//        canvas.drawText(Float.toString(minY), x*0.01f, y*0.9f, text);
+//        canvas.drawText(Float.toString(line1Y), x*0.01f, y*0.7f, text);
+//        canvas.drawText(Float.toString(line2Y), x*0.01f, y*0.5f, text);
+//        canvas.drawText(Float.toString(line3Y), x*0.01f, y*0.3f, text);
+//        canvas.drawText(Float.toString(maxY), x*0.01f, y*0.1f, text);
 
-        long timeCoef = listParams.get(listParams.size()-1).getTimestamp()+listParams.get(0).getTimestamp();
-
-        Date startDate = new Date(listParams.get(0).getTimestamp());
-        Date endDate = new Date(listParams.get(listParams.size()-1).getTimestamp());
-        Date line1X = new Date(listParams.get(0).getTimestamp()+timeCoef);
-        Date line2X = new Date(timeCoef/2);
-        Date line3X = new Date(listParams.get(0).getTimestamp()+3*timeCoef);
-
-        //SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        //long timeCoef = listParams.get(listParams.size()-1).second+listParams.get(0).second;
 
 
-        canvas.drawText(df.format(startDate), x*0.01f, y*0.99f, text);
+
+
+        //canvas.drawText(df.format(startDate), x*0.01f, y*0.99f, text);
         //canvas.drawText(df.format(line1X), x*0.25f, y*0.99f, text);
-        canvas.drawText(df.format(line2X), x*0.41f, y*0.99f, text);
+        //canvas.drawText(df.format(line2X), x*0.41f, y*0.99f, text);
         //canvas.drawText(df.format(line3X), x*0.65f, y*0.99f, text);
-        canvas.drawText(df.format(endDate), x*0.77f, y*0.99f, text);
+        //canvas.drawText(df.format(endDate), x*0.77f, y*0.99f, text);
 
-        float coefY = y*0.8f/(max-min);
         float coefX = x*0.8f/listParams.size();
+        float coefY = y*0.8f/(maxY-minY);
 
         float start = x*0.1f;
         line.setColor(Color.RED);
 
+        float test = listParams.get(1).second-listParams.get(0).second;
+
+
         for (int i=0; i<listParams.size()-1; i++) {
-            canvas.drawLine(start, y*0.1f+((max-listParams.get(i).getTemperature())*coefY), start+coefX, y*0.1f+((max-listParams.get(i+1).getTemperature())*coefY), line);
-            start += coefX;
+            canvas.drawLine(x*0.1f+(coefX*(listParams.get(i+1).second-listParams.get(i).second)), y*0.1f+((maxY-listParams.get(i).first)*coefY), x*0.1f+(listParams.get(i+1).first*coefX), y*0.1f+((maxY-listParams.get(i+1).second)*coefY), line);
+            //start += coefX;
         }
 
     }
 
-    private void drawChart(Canvas canvas) {
-//        paint.setColor(Color.WHITE);
-//        canvas.drawRect(100, 100, 200, 200, paint);
-    }
-
-    public static void setParameters(List<Temperature> lista) {
+    public static void setParameters(List<Pair<Long, Float>> lista) {
         listParams = lista;
 
     }
