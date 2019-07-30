@@ -27,11 +27,8 @@ import com.example.rbt_praksa_android.network.BroadcastHandler;
 import com.example.rbt_praksa_android.network.MeasurementApi;
 import com.example.rbt_praksa_android.network.RetrofitClientInstance;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), HistoryActivity.class);
                 intent.putExtra("historyList", historyList);
-                //intent.putExtra("chartList", chartList);
                 startActivity(intent);
             }
         });
@@ -192,15 +188,12 @@ public class MainActivity extends AppCompatActivity {
                             chartList.add(new Pair<Long, Float>(time, airdata.getTemperature().floatValue()));
 
                             Double temp1 = airdata.getTemperature();
-                            //String temp2 = temp1.toString();
                             temp.setText(temp1 + "°C");
 
                             Double humid1 = airdata.getHumidity();
-                            //String humid2 = humid1.toString();
                             humid.setText(humid1 + "%");
 
                             Double quality1 = airdata.getPollution();
-                            //String quality2 = quality1.toString();
                             pollution.setText(quality1.toString());
 
                             String timestamp1 = airdata.getTimestamp();
